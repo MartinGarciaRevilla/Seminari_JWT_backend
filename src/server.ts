@@ -69,7 +69,7 @@ const swaggerOptions = {
             },
         ],
     },
-    apis: ['./modules/users/*.js', './modules/forum/*.js', './modules/subjects/*.js', './modules/auth/*.js'] // Asegúrate de que esta ruta apunta a tus rutas
+    apis: ['./build/modules/users/*.js', './build/modules/forum/*.js', './build/modules/subjects/*.js', './build/modules/auth/*.js'] // Asegúrate de que esta ruta apunta a tus rutas
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
@@ -80,10 +80,10 @@ app.use(express.json());
 app.use(loggingHandler);
 app.use(corsHandler);
 //rutas
-app.use('/api', userRoutes);
-app.use('/api', forumRoutes);
-app.use('/api', subjectRoutes);
-app.use('/api', authRoutes);
+app.use('/api/auth', authRoutes); // Rutas de autenticación
+app.use('/api', userRoutes); // Rutas de usuarios
+app.use('/api', forumRoutes); // Rutas del foro
+app.use('/api', subjectRoutes); // Rutas de asignaturas
 // Rutes de prova
 app.get('/', (req, res) => {
     res.send('Welcome to my API');
@@ -104,4 +104,3 @@ app.listen(LOCAL_PORT, () => {
 function cors(arg0: { origin: string; credentials: boolean; }): any {
     throw new Error('Function not implemented.');
 }
-

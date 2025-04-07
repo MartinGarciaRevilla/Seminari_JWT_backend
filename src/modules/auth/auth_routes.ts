@@ -1,6 +1,6 @@
 // src/routes/user_routes.ts
 import express from 'express';
-import { registerCtrl, loginCtrl, googleAuthCtrl, googleAuthCallback } from "../auth/auth_controller.js";
+import { registerCtrl, loginCtrl, googleAuthCtrl, googleAuthCallback, refreshTokenCtrl } from "../auth/auth_controller.js";
 
 const router = express.Router();
 
@@ -68,7 +68,7 @@ const router = express.Router();
  *       400:
  *         description: Error en la solicitud
  */
-router.post("/auth/register", registerCtrl);
+router.post("/register", registerCtrl);
 
 /**
  * @swagger
@@ -88,7 +88,7 @@ router.post("/auth/register", registerCtrl);
  *       400:
  *         description: Error en la solicitud
  */
-router.post("/auth/login", loginCtrl);
+router.post("/login", loginCtrl);
 /**
  * @swagger
  * /api/auth/google:
@@ -99,7 +99,7 @@ router.post("/auth/login", loginCtrl);
  *       302:
  *         description: Redirección a Google para autenticación
  */
-router.get('/auth/google',googleAuthCtrl );
+router.get('/google',googleAuthCtrl );
 
 /**
  * @swagger
@@ -113,6 +113,35 @@ router.get('/auth/google',googleAuthCtrl );
  *       400:
  *         description: Error en la autenticación
  */
-router.get('/auth/google/callback', googleAuthCallback);
+router.get('/google/callback', googleAuthCallback);
+
+/**
+ * @swagger
+ * /api/auth/refresh-token:
+ *   post:
+ *     summary: Refresca el access token usando el refresh token
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *                 description: El refresh token del usuario
+ *             example:
+ *               refreshToken: "tu_refresh_token_aqui"
+ *     responses:
+ *       200:
+ *         description: Nuevo access token generado exitosamente
+ *       400:
+ *         description: Refresh token requerido
+ *       401:
+ *         description: Refresh token inválido
+ */
+router.post("/refresh-token", refreshTokenCtrl);
+
 
 export default router;

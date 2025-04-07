@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { registerNewUser, loginUser, googleAuth } from "../auth/auth_service.js";
-
+import { registerNewUser, loginUser, googleAuth, refreshToken as refreshTokenService } from "../auth/auth_service.js";
 const registerCtrl = async ({body}: Request, res: Response) => {
     try{
         const responseUser = await registerNewUser(body);
@@ -82,5 +81,21 @@ const googleAuthCallback = async (req: Request, res: Response) => {
     }
 };
 
+const refreshTokenCtrl = async (req: Request, res: Response) => {
+    try {
+        const { refreshToken } = req.body;
 
-export { registerCtrl, loginCtrl,googleAuthCtrl, googleAuthCallback };
+        if (!refreshToken) {
+            return res.status(400).json({ message: "Refresh token requerido" });
+        }
+
+        const newAccessToken = await refreshTokenService(refreshToken); // Usa el nombre renombrado
+        res.status(200).json({ accessToken: newAccessToken }); // Devuelve el nuevo access token
+    } catch (error: any) {
+        console.error("Error en refreshTokenCtrl:", error.message);
+        res.status(401).json({ message: "Refresh token inválido" });
+    }
+};
+
+
+export { registerCtrl, loginCtrl,googleAuthCtrl, googleAuthCallback, refreshTokenCtrl };

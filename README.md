@@ -1,3 +1,5 @@
+Video Explicatiu del codi modificat:https://www.youtube.com/watch?v=9tJPtilteeo  Referencies: codi grup angular y chatGPT
+
 # SEMINARI JWT
 
 ## Descripció
